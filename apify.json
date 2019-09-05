@@ -1,0 +1,6 @@
+{
+	"name": "amazon-asin-collector",
+	"version": "0.0",
+	"buildTag": "latest",
+	"env": null
+}
