@@ -1,6 +1,6 @@
 const Apify = require('apify');
-const BigSet = require('big-set');
 
+const { saveSet, loadSet } = require('./set-serialization.js');
 const SessionsCheerioCrawler = require('./session-cheerio-crawler');
 const makeHandlePageFunctionWithContext = require('./handle-page-function-with-context.js');
 
@@ -16,9 +16,10 @@ Apify.main(async () => {
         maxRequestRetries,
         outputFields,
         dedup,
+        dedupStoreIntervalMins = 15,
     } = input;
 
-    const set = dedup ? new BigSet() : null;
+    const set = dedup ? await loadSet() : null;
 
     for (const url of categoryUrls) {
         await requestQueue.addRequest({
@@ -43,6 +44,18 @@ Apify.main(async () => {
             },
         },
         handlePageFunction: makeHandlePageFunctionWithContext({ requestQueue, outputFields, set }),
+    });
+
+    if (set) {
+        setInterval(async () => {
+            saveSet(set);
+        }, 60000 * dedupStoreIntervalMins);
+    }
+
+    Apify.events.on('migrating', async () => {
+        if (set) {
+            await saveSet(set);
+        }
     });
 
     // Run crawler.
