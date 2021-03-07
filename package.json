@@ -9,9 +9,13 @@
 		"request": "^2.88.0",
 		"request-promise": "^4.2.4"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"eslint": "^7.21.0",
+		"@apify/eslint-config-apify-actor": "latest"
+	},
 	"scripts": {
-		"start": "node ./src/main.js"
+		"start": "node ./src/main.js",
+        "lint": "eslint ."
 	},
 	"repository": {
 		"type": "git",
@@ -19,5 +23,8 @@
 	},
 	"author": "",
 	"license": "ISC",
-	"homepage": ""
+	"homepage": "",
+    "engines": {
+        "node": ">=15"
+    }
 }

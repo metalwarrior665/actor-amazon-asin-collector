@@ -47,8 +47,8 @@ Apify.main(async () => {
     });
 
     if (set) {
-        setInterval(async () => {
-            saveSet(set);
+        setInterval(() => {
+            void saveSet(set); // void to indicate ESLint that we don't want to wait for async function to finish
         }, 60000 * dedupStoreIntervalMins);
     }
 
